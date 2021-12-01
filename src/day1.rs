@@ -14,8 +14,7 @@ fn part1(nums: &Input) -> usize {
 }
 
 fn part2(nums: &Input) -> usize {
-    let sums = nums.iter().zip(nums.iter().skip(1)).zip(nums.iter().skip(2)).map(|((a,b),c)| a + b + c).collect::<Vec<u32>>();
-    sums.iter().zip(sums.iter().skip(1)).filter(|(a,b)| a < b).count()
+    nums.iter().zip(nums.iter().skip(3)).filter(|(a,b)| a < b).count()
 }
 
 pub fn main() {
