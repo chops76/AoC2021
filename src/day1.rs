@@ -10,44 +10,44 @@ fn parse_input(filename: &str) -> Input {
 }
 
 fn part1(nums: &Input) -> usize {
-	nums.iter().zip(nums.iter().skip(1)).filter(|(a,b)| a < b).count()
+    nums.iter().zip(nums.iter().skip(1)).filter(|(a,b)| a < b).count()
 }
 
 fn part2(nums: &Input) -> usize {
-	let sums = nums.iter().zip(nums.iter().skip(1)).zip(nums.iter().skip(2)).map(|((a,b),c)| a + b + c).collect::<Vec<u32>>();
-	sums.iter().zip(sums.iter().skip(1)).filter(|(a,b)| a < b).count()
+    let sums = nums.iter().zip(nums.iter().skip(1)).zip(nums.iter().skip(2)).map(|((a,b),c)| a + b + c).collect::<Vec<u32>>();
+    sums.iter().zip(sums.iter().skip(1)).filter(|(a,b)| a < b).count()
 }
 
 pub fn main() {
-	let nums = parse_input("./input/day1/input1.txt");
+    let nums = parse_input("./input/day1/input1.txt");
 
-	let p1_timer = Instant::now();
+    let p1_timer = Instant::now();
     let p1_result = part1(&nums);
     let p1_time = p1_timer.elapsed();
-	println!("Part 1: {}", p1_result);
-	println!("Part 1 Time: {:?}", p1_time);
+    println!("Part 1: {}", p1_result);
+    println!("Part 1 Time: {:?}", p1_time);
 
-	let p2_timer = Instant::now();
+    let p2_timer = Instant::now();
     let p2_result = part2(&nums);
     let p2_time = p2_timer.elapsed();
-	println!("Part 2: {}", p2_result);
-	println!("Part 2 Time: {:?}", p2_time);
+    println!("Part 2: {}", p2_result);
+    println!("Part 2 Time: {:?}", p2_time);
 }
 
 #[cfg(test)]
 mod tests {
 
-	use super::*;
+    use super::*;
 
-	#[test]
-	fn day1_test1() {
-		let nums = parse_input("./input/day1/test.txt");
-		assert_eq!(part1(&nums), 7);
+    #[test]
+    fn day1_test1() {
+        let nums = parse_input("./input/day1/test.txt");
+        assert_eq!(part1(&nums), 7);
 	}
 
-	#[test]
-	fn day1_test2() {
-		let nums = parse_input("./input/day1/test.txt");
-		assert_eq!(part2(&nums), 5);
+    #[test]
+    fn day1_test2() {
+        let nums = parse_input("./input/day1/test.txt");
+        assert_eq!(part2(&nums), 5);
 	}
 }
