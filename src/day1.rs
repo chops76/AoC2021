@@ -2,25 +2,24 @@ use std::io::{BufRead, BufReader};
 use std::fs::File;
 use std::time::Instant;
 
-type Input = u32;
+type Input = Vec<u32>;
 
-fn parse_input() -> Input {
-    let path = "./input/day1/input1.txt";
-    let f = File::open(path).unwrap();
-    //BufReader::new(f).lines().flatten().map(|s| s.parse().unwrap()).collect()
-	0
+fn parse_input(filename: &str) -> Input {
+    let f = File::open(filename).unwrap();
+    BufReader::new(f).lines().flatten().map(|s| s.parse().unwrap()).collect()
 }
 
-fn part1(nums: &Input) -> u32 {
-	0
+fn part1(nums: &Input) -> usize {
+	nums.iter().zip(nums.iter().skip(1)).filter(|(a,b)| a < b).count()
 }
 
-fn part2(nums: &Input) -> u32 {
-	0
+fn part2(nums: &Input) -> usize {
+	let sums = nums.iter().zip(nums.iter().skip(1)).zip(nums.iter().skip(2)).map(|((a,b),c)| a + b + c).collect::<Vec<u32>>();
+	sums.iter().zip(sums.iter().skip(1)).filter(|(a,b)| a < b).count()
 }
 
 pub fn main() {
-	let nums = parse_input();
+	let nums = parse_input("./input/day1/input1.txt");
 
 	let p1_timer = Instant::now();
     let p1_result = part1(&nums);
@@ -42,6 +41,13 @@ mod tests {
 
 	#[test]
 	fn day1_test1() {
-		assert_eq!(0, 0);
+		let nums = parse_input("./input/day1/test.txt");
+		assert_eq!(part1(&nums), 7);
+	}
+
+	#[test]
+	fn day1_test2() {
+		let nums = parse_input("./input/day1/test.txt");
+		assert_eq!(part2(&nums), 5);
 	}
 }
