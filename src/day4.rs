@@ -2,6 +2,9 @@ use std::io::Read;
 use std::fs::File;
 use std::time::Instant;
 
+const MARKED: u64 = 100;
+const COMPLETE: u64 = 200;
+
 type Input = (Vec<u64>, Vec<Vec<u64>>);
 
 fn parse_input(path: &str) -> Input {
@@ -20,12 +23,12 @@ fn parse_input(path: &str) -> Input {
 
 fn is_winner(board: &Vec<u64>) -> bool {
     for i in 0..5 {
-        if board[i*5] == 100 && board[i*5+1] == 100 && board[i*5+2] == 100 && 
-           board[i*5+3] == 100 && board[i*5+4] == 100 {
+        if board[i*5] == MARKED && board[i*5+1] == MARKED && board[i*5+2] == MARKED && 
+           board[i*5+3] == MARKED && board[i*5+4] == MARKED {
                return true; // Row
         }
-        if board[i] == 100 && board[i+5] == 100 && board[i+10] == 100 &&
-           board[i+15] == 100 && board[i+20] == 100 {
+        if board[i] == MARKED && board[i+5] == MARKED && board[i+10] == MARKED &&
+           board[i+15] == MARKED && board[i+20] == MARKED {
                return true;  // Column
            }
     }
@@ -40,9 +43,9 @@ fn part1(picks: &Vec<u64>, boards: &Vec<Vec<u64>>) -> u64 {
         for board in &mut marked_boards {
             match board.iter().position(|v| v == pick) {
                 Some(pos) => {
-                    board[pos] = 100;
+                    board[pos] = MARKED;
                     if is_winner(&board) {
-                        return board.iter().filter(|&v| *v != 100).sum::<u64>() * pick;
+                        return board.iter().filter(|&v| *v != MARKED).sum::<u64>() * pick;
                     }
                 },
                 None => {}
@@ -59,18 +62,18 @@ fn part2(picks: &Vec<u64>, boards: &Vec<Vec<u64>>) -> u64 {
 
     for pick in picks {
         for board in &mut marked_boards {
-            if board[0] == 200 {
+            if board[0] == COMPLETE {
                 continue;
             }
             match board.iter().position(|v| v == pick) {
                 Some(pos) => {
-                    board[pos] = 100;
+                    board[pos] = MARKED;
                     if is_winner(&board) {
                         winners += 1;
                         if winners == boards.len() {
                             return board.iter().filter(|&v| *v != 100).sum::<u64>() * pick;
                         } 
-                        board[0] = 200;
+                        board[0] = COMPLETE;
                     }
                 },
                 None => {}
