@@ -19,13 +19,6 @@ fn calc_fish(a: &Vec<i64>, days: usize) -> usize {
     for _ in 0..days {
         fish.rotate_left(1);
         fish[6] += fish[8];
-        /*
-        let spawning = fish[0];
-        for i in 0..8 {
-            fish[i] = fish[i+1];
-        }
-        fish[6] += spawning;
-        fish[8] = spawning; */
     }
 
     fish.iter().sum()    
