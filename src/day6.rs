@@ -1,6 +1,7 @@
 use std::io::Read;
 use std::fs::File;
 use std::time::Instant;
+use std::collections::VecDeque;
 
 type Input = Vec<i64>;
 
@@ -12,18 +13,19 @@ fn parse_input(path: &str) -> Input {
 }
 
 fn calc_fish(a: &Vec<i64>, days: usize) -> usize {
-    let mut fish = vec![0;9];
-    for age in a {
-        fish[*age as usize] += 1;
-    }
+    let mut fish = (0..9).map(|i| a.iter().filter(|&&v| v == i).count())
+                         .collect::<VecDeque<usize>>();
 
     for _ in 0..days {
+        fish.rotate_left(1);
+        fish[6] += fish[8];
+        /*
         let spawning = fish[0];
         for i in 0..8 {
             fish[i] = fish[i+1];
         }
         fish[6] += spawning;
-        fish[8] = spawning;
+        fish[8] = spawning; */
     }
 
     fish.iter().sum()    
