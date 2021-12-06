@@ -11,30 +11,13 @@ fn parse_input(path: &str) -> Input {
     fstr.split(",").map(|s| s.parse().unwrap()).collect()
 }
 
-
-fn part1(a: &Vec<i64>) -> usize {
-    let mut ages = a.clone();
-    for _ in 0..80 {
-        let cur_len = ages.len();
-        for i in 0..cur_len {
-            if ages[i] == 0 {
-                ages[i] = 6;
-                ages.push(8);
-            } else {
-                ages[i] -= 1;
-            }
-        }
-    }
-    ages.len()
-}
-
-fn part2(a: &Vec<i64>) -> usize {
+fn calc_fish(a: &Vec<i64>, days: usize) -> usize {
     let mut fish = vec![0;9];
     for age in a {
         fish[*age as usize] += 1;
     }
 
-    for _ in 0..256 {
+    for _ in 0..days {
         let spawning = fish[0];
         for i in 0..8 {
             fish[i] = fish[i+1];
@@ -43,7 +26,15 @@ fn part2(a: &Vec<i64>) -> usize {
         fish[8] = spawning;
     }
 
-    fish.iter().sum()
+    fish.iter().sum()    
+}
+
+fn part1(a: &Vec<i64>) -> usize {
+    calc_fish(a, 80)
+}
+
+fn part2(a: &Vec<i64>) -> usize {
+    calc_fish(a, 256)
 }
 
 pub fn main() {
