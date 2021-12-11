@@ -119,7 +119,6 @@ fn part2(g: &Input) -> usize {
 
 pub fn main() {
     let grid = parse_input("./input/day11/input.txt");
-    println!("{:?}", grid);
 
     let p1_timer = Instant::now();
     let p1_result = part1(&grid);
