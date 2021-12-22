@@ -40,8 +40,42 @@ fn parse_input(filename: &str) -> Input {
     BufReader::new(f).lines().flatten().map(|s| parse_line(&s)).collect()
 }
 
+fn calc_len(instructions: &Input, y_pos: i64) -> i64 {
+    let my_set = instructions.iter().filter(|i| y_pos >= i.y1 && y_pos <= i.y2).collect::<Vec<&Instr>>();
+    let mut z_hs = HashSet::new();
+    for i in &my_set {
+        z_hs.insert(i.z1);
+        z_hs.insert(i.z2 + 1);
+    }    
+    let mut z_pts = z_hs.iter().map(|v| *v).collect::<Vec<i64>>();
+    z_pts.sort();
+    let mut total_len = 0;
+    let mut cur_state = false;
+    let mut first_point = true;
+    let mut prev_point = 0;
+    for z in z_pts {
+        if !first_point {
+            if cur_state {
+                total_len += z - prev_point;
+            }
+            
+        }
+        first_point = false;
+        prev_point = z;
+        cur_state = false;
+        for i in &my_set {
+            if z >= i.z1 && z <= i.z2 {
+                cur_state = i.turn_on;
+            }
+        } 
+    }
+    total_len
+}
+
+
 fn calc_area(instructions: &Input, x_pos: i64) -> i64 {
-    let my_set = instructions.iter().filter(|i| x_pos >= i.x1 && x_pos <= i.x2).collect::<Vec<&Instr>>();
+    let my_set = instructions.iter().filter(|i| x_pos >= i.x1 && x_pos <= i.x2)
+                             .map(|v| v.clone()).collect::<Vec<Instr>>();
     let mut y_hs = HashSet::new();
     for i in &my_set {
         y_hs.insert(i.y1);
@@ -59,15 +93,7 @@ fn calc_area(instructions: &Input, x_pos: i64) -> i64 {
         }
         first_point = false;
         prev_point = y;
-        let mut v = vec![false; 200000];
-        for i in &my_set {
-            if y >= i.y1 && y <= i.y2 {
-                for j in i.z1..=i.z2 {
-                    v[(j+100000) as usize] = i.turn_on;
-                }
-            }
-        } 
-        cur_area = v.iter().filter(|v| **v).count() as i64;       
+        cur_area = calc_len(&my_set, y)   
     }
     total_area
 }
