@@ -328,23 +328,3 @@ pub fn main() {
 	println!("Part 2: {}", p2_result);
 	println!("Part 2 Time: {:?}", p2_time); 
 }
-
-#[cfg(test)]
-mod tests {
-
-	use super::*;
-
-	#[test]
-	fn day8_test1() {
-		let input = parse_input("./input/day8/test.txt");
-		let (acc, _) = run_prog(&input);
-		assert_eq!(acc,5);
-	}
-
-	#[test]
-	fn day8_test2() {
-		let input = parse_input("./input/day8/test.txt");
-		let (_, ip) = run_prog(&input);
-		assert_eq!(ip,1);
-	}
-}
